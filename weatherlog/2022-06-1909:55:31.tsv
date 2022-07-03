@@ -1,2 +1,0 @@
-lon	lat	weather_to_id	weather_to_main	description	icon	base	temp	feels_like	temp_min	temp_max	pressure	humidity	visibility	speed	deg	all	dt	type	sys_to_id	message	country	sunrise	sunset	timezone	id	name	cod
-135.5022	34.6937	803	Clouds	曇りがち	04d	stations	25.13	25.47	23.9	25.93	1011	68	10000	3.6	230	75	1655600043	1	8032	0.0	JP	1655581489	1655633619	32400	1853909	大阪市	200
