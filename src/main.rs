@@ -329,6 +329,10 @@ async fn do_get_weather(api_client: ApiClient) -> Result<(), Box<dyn std::error:
     if let Some(v) = cod {
         openweather_to_tsv.cod = v.as_i64().unwrap();
         println!("cod: {}", v.as_i64().unwrap());
+        if v.as_i64().unwrap() != 200 {
+            println!("not 200 status\ncheck config");
+            panic!();
+        }
     }
 
     // 天気アイコンを表示
