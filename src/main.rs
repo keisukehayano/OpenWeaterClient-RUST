@@ -72,6 +72,17 @@ async fn do_get_weather(api_client: ApiClient) -> Result<(), Box<dyn std::error:
 
     let mut openweather_to_tsv: OpenWeaterToTsv = OpenWeaterToTsv::new();
 
+    // 内部パラメータ ステータスコード200じゃない場合は終了
+    let cod = deserialize.get("cod");
+    if let Some(v) = cod {
+        openweather_to_tsv.cod = v.as_i64().unwrap();
+        println!("cod: {}", v.as_i64().unwrap());
+        if v.as_i64().unwrap() != 200 {
+            println!("not 200 status\ncheck config");
+            panic!();
+        }
+    }
+
     // 都市の地理的位置、緯度
     let lat = deserialize.get("coord").and_then(|v| v.get("lat"));
     if let Some(v) = lat {
@@ -322,17 +333,6 @@ async fn do_get_weather(api_client: ApiClient) -> Result<(), Box<dyn std::error:
     if let Some(v) = name {
         openweather_to_tsv.name = v.as_str().unwrap().to_string();
         println!("name: {}", v.as_str().unwrap());
-    }
-
-    // 内部パラメータ
-    let cod = deserialize.get("cod");
-    if let Some(v) = cod {
-        openweather_to_tsv.cod = v.as_i64().unwrap();
-        println!("cod: {}", v.as_i64().unwrap());
-        if v.as_i64().unwrap() != 200 {
-            println!("not 200 status\ncheck config");
-            panic!();
-        }
     }
 
     // 天気アイコンを表示
