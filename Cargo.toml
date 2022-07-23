@@ -17,6 +17,7 @@ dotenvy = "0.15.1"
 tokio = { version = "1", features = ["full"] }
 termion = "1.5.6"
 viuer = "0.6.1"
+url = "2.2.2"
 
 
 [dependencies.chrono]
