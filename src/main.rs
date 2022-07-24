@@ -26,6 +26,9 @@ use api::Wind; */
 use std::time::Instant;
 use std::{thread, time};
 
+use url::Url;
+use url::ParseError as UrlParseError;
+
 // クライアント定義
 struct ApiClient {
     server: String,
@@ -35,7 +38,7 @@ struct ApiClient {
 // クライアント実装
 impl ApiClient {
     async fn get_weather(&self) -> Result<String, Box<dyn std::error::Error>> {
-        // APIキーをebvファイルを取得する。
+        // APIキーをenvファイルを取得する。
         let api_key = env::var("API_KEY").expect("API KEY env error...");
         let location_name = env::var("LOCATION_NAME").expect("LOCATION NAME env error...");
         // HashMapにQueryParamを設定。
@@ -44,6 +47,19 @@ impl ApiClient {
         params.insert("units", "metric".to_string());
         params.insert("lang", "ja".to_string());
         params.insert("appid", api_key);
+
+        match Url::parse(&self.server) {
+            Ok(url) => { println!("{}", url); },
+            Err(UrlParseError::RelativeUrlWithoutBase) => {
+                println!("Err(RelativeUrlWithoutBase)");
+            },
+            Err(e) => { println!("{}", e); }
+        }
+
+
+        // テスト ここで止める
+        panic!("########### END ###########");
+
         // 非同期でJSONデータを取得。
         let resp = self
             .client
@@ -684,6 +700,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             Err(_) => String::from("https://api.openweathermap.org/data/2.5/weather"),
             Ok(val) => val,
         };
+
         let api_client = ApiClient {
             server: server,
             client: client,
